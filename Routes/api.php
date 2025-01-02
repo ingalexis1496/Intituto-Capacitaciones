@@ -1,7 +1,5 @@
 <?php
-require_once "../Models/Curso.php";
-
-
+require_once "../Controllers/CursoController.php";
 
 $method = $_SERVER['REQUEST_METHOD'];
 $request_uri = trim($_SERVER['REQUEST_URI'], "/");
@@ -12,35 +10,34 @@ $recurso = $uri_parts[3];
 $id = isset($uri_parts[4]) ? (int) $uri_parts[4] : null;
 
 if ($recurso === 'cursos') {
-    $curso = new Curso();
+    $cursoController = new CursoController();
     switch ($method) {
         case 'GET':
             if ($id) {
-                echo json_encode($curso->obtenerPorId($id));
+                echo json_encode($cursoController->obtenerPorId($id));
             } else {
-                echo json_encode($curso->listar());
+                $action = $uri_parts[4];
+                if($action === 'obtener-cursos-actuales'){
+                    echo json_encode($cursoController->obtenerCursosActuales()); 
+                }
+                elseif($action === 'listar'){
+                    echo json_encode($cursoController->listar()); 
+                }
+                else{
+                    echo json_encode(["message" => "Metodo no existe"]);
+                }
             }
             break;
 
         case 'POST':
             $input=json_decode(file_get_contents('php://input'), true);
-            $curso->setNombre($input['nombre']);
-            $curso->setDescripcion($input['descripcion']);
-            $curso->ingresar();
-           
-            echo json_encode(["message" => "Curso creado con éxito"]);
+            echo $cursoController->ingresar($input);
             break;
 
         case 'PUT':
             if ($id) {
-                $input=json_decode(file_get_contents('php://input'), true);
-                $curso->setId($id);
-                $curso->setNombre($input['nombre']);
-                $curso->setDescripcion($input['descripcion']);
-                
-          
-                $curso->editar();
-                echo json_encode(["message" => "Curso actualizado con éxito"]);
+                $input=json_decode(file_get_contents('php://input'), true);             
+                echo $cursoController->editar($id, $input);
             } else {
                 echo json_encode(["error" => "ID de curso requerido"]);
             }
@@ -48,9 +45,7 @@ if ($recurso === 'cursos') {
 
         case 'DELETE':
             if ($id) {
-                $curso->setId($id);
-                $curso->eliminar();
-                echo json_encode(["message" => "Curso eliminado con éxito"]);
+                return $cursoController->eliminar($id);
             } else {
                 echo json_encode(["error" => "ID de curso requerido"]);
             }

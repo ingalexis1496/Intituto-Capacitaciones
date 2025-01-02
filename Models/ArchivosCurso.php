@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Conexion.php';
-class Archivos_curso {
+class ArchivosCurso {
 
 
 

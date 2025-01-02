@@ -10,23 +10,32 @@ class CursoController {
         return Curso::obtenerPorId($id);
     }
 
-    public static function guardar($data) {
-        $curso = new Curso(0, $data['nombre'], $data['descripcion']);
+    public static function ingresar($data) {
+        $curso = new Curso();
+        $curso->setNombre($data['nombre']);
+        $curso->setDescripcion($data['descripcion']);
         $curso->ingresar();
         http_response_code(201);
-        echo json_encode(["message" => "Curso creado exitosamente"]);
+        return json_encode(["message" => "Curso creado exitosamente"]);
     }
 
-    public static function editar($data) {
-        $curso = new Curso($data['id'], $data['nombre'], $data['descripcion'], $data['fecha_inicio'], $data['fecha_fin']);
+    public static function editar($id, $data) {
+        $curso = new Curso();
+        $curso->setId($id);
+        $curso->setNombre($data['nombre']);
+        $curso->setDescripcion($data['descripcion']);
         $curso->editar();
-        echo json_encode(["message" => "Curso actualizado exitosamente"]);
+        return json_encode(["message" => "Curso actualizado exitosamente"]);
     }
 
     public static function eliminar($id) {
         $curso = new Curso($id);
         $curso->eliminar();
-        echo json_encode(["message" => "Curso eliminado exitosamente"]);
+        return json_encode(["message" => "Curso eliminado exitosamente"]);
+    }
+
+    public static function obtenerCursosActuales() {
+        return Curso::obtenerCursosActuales();
     }
 }
 ?>

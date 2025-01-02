@@ -24,7 +24,7 @@ class Curso {
 
     public static function obtenerPorId($id) {
         $conexion = new Conexion();
-        $listado = $conexion->consultar("SELECT * FROM curso WHERE id = $id");
+        $listado = $conexion->consultar("SELECT * FROM cursos WHERE id_curso = $id");
         $conexion->cerrar();
         return $listado[0] ?? null;
     }
@@ -51,6 +51,13 @@ class Curso {
         $resultado = $conexion->actualizar($query);
         $conexion->cerrar();
         return $resultado;
+    }
+
+    public static function obtenerCursosActuales() {
+        $conexion = new Conexion();       
+        $listado = $conexion->consultar("SELECT cursos.nombre FROM horarios JOIN cursos ON cursos.id_curso = horarios.id_curso WHERE curdate() between fecha_hora_inicio and fecha_hora_fin GROUP BY cursos.id_curso;");
+        $conexion->cerrar();
+        return $listado[0] ?? null;
     }
 
     public function getId() { return $this->id; }
