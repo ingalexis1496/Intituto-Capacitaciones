@@ -19,6 +19,18 @@
             return Usuarios::obtenerCursosPerdidosEstudiantes();
         }
 
+        public static function obtenerEstadisticaRangoNotas() {
+            return Usuarios::obtenerEstadisticaRangoNotas();
+        }
+        public static function obtenerCursoHorarioEspecifico() {
+            return Usuarios::obtenerCursoHorarioEspecifico();
+            
+        }
+        public static function obtenerCursoTomadoPorEstudiante() {
+            return Usuarios::obtenerCursoTomadoPorEstudiante();
+            
+        }
+
     }
 
 ?>

@@ -78,6 +78,15 @@ elseif($recurso === 'estudiantes'){
             elseif($action === 'obtener-cursos-perdidos'){
                 echo json_encode($usuariosController->obtenerCursosPerdidosEstudiantes()); 
             }
+            elseif($action === 'obtener-rango-notas'){
+                echo json_encode($usuariosController->obtenerEstadisticaRangoNotas()); 
+            }
+            elseif($action === 'obtener-curso-especifico'){
+                echo json_encode($usuariosController->obtenerCursoHorarioEspecifico()); 
+            }
+            elseif($action === 'obtener-curso-tomado-estudiante'){
+                echo json_encode($usuariosController->obtenerCursoTomadoPorEstudiante()); 
+            }
             else{
                 echo json_encode(["message" => "Metodo no existe"]);
             }

@@ -36,7 +36,8 @@ class CursoController {
 
     public static function obtenerCursosActuales() {
         return Curso::obtenerCursosActuales();
-        
+
     }
+  
 }
 ?>
