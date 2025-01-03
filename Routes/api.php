@@ -1,5 +1,6 @@
 <?php
 require_once "../Controllers/CursoController.php";
+require_once "../Controllers/UsuariosController.php";
 
 $method = $_SERVER['REQUEST_METHOD'];
 $request_uri = trim($_SERVER['REQUEST_URI'], "/");
@@ -55,8 +56,37 @@ if ($recurso === 'cursos') {
             echo json_encode(["error" => "Método no permitido"]);
     }
 }
-elseif($recursos === 'estudiantes'){
+elseif($recurso === 'estudiantes'){
 
+    $usuariosController = new UsuariosController();
+    switch ($method) {
+    case 'GET':
+        if ($id) {
+            echo json_encode($cursoController->obtenerPorId($id));
+        } else {
+            $action = $uri_parts[4];
+      
+            if($action === 'obtener-estudiantes-materia'){
+                echo json_encode($usuariosController->ObtenerEstudianstesCursoEspecifico()); 
+            }
+            elseif($action === 'obtener-estudiantes-aprobados'){
+                echo json_encode($usuariosController->obtenerEstudiantesAprobados()); 
+            }
+            elseif($action === 'obtener-cursos-promedios'){
+                echo json_encode($usuariosController->obtenerCursosPromedios()); 
+            }
+            elseif($action === 'obtener-cursos-perdidos'){
+                echo json_encode($usuariosController->obtenerCursosPerdidosEstudiantes()); 
+            }
+            else{
+                echo json_encode(["message" => "Metodo no existe"]);
+            }
+        }
+        break;
+        
+        default:
+            echo json_encode(["error" => "Método no permitido"]);
+}
 }
 else {
     echo json_encode(["error" => "Recurso no válido."]);

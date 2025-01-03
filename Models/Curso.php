@@ -57,7 +57,7 @@ class Curso {
         $conexion = new Conexion();       
         $listado = $conexion->consultar("SELECT cursos.nombre FROM horarios JOIN cursos ON cursos.id_curso = horarios.id_curso WHERE curdate() between fecha_hora_inicio and fecha_hora_fin GROUP BY cursos.id_curso;");
         $conexion->cerrar();
-        return $listado[0] ?? null;
+        return $listado ?? null;
     }
 
     public function getId() { return $this->id; }
